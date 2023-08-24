@@ -1,13 +1,3 @@
-interface ParseOptions {
-    decode?: (val: string) => string;
-}
-/**
- * Parses the given cookie header string into an object
- * The object has the various cookies as keys(names) => values
- */
-declare function cookieParse(str: string, options?: ParseOptions): {
-    [key: string]: any;
-};
 interface SerializeOptions {
     encode?: (val: string | number | boolean) => string;
     maxAge?: number;
@@ -19,17 +9,6 @@ interface SerializeOptions {
     priority?: string;
     sameSite?: boolean | string;
 }
-/**
- * Serialize data into a cookie header.
- *
- * Serialize the a name value pair into a cookie string suitable for
- * http headers. An optional options object specified cookie parameters.
- *
- * ```js
- * cookieSerialize('foo', 'bar', { httpOnly: true }) // "foo=bar; httpOnly"
- * ```
- */
-declare function cookieSerialize(name: string, val: string, options?: SerializeOptions): string;
 interface ListResult<T> {
     page: number;
     perPage: number;
@@ -103,7 +82,7 @@ type AuthModel = RecordModel | AdminModel | null;
 type OnStoreChangeFunc = (token: string, model: AuthModel) => void;
 /**
  * Base AuthStore class that is intended to be extended by all other
- * PocketBase AuthStore implementations.
+ * CoddySpace AuthStore implementations.
  */
 declare abstract class BaseAuthStore {
     protected baseToken: string;
@@ -143,7 +122,7 @@ declare abstract class BaseAuthStore {
      *
      * NB! This function doesn't validate the token or its data.
      * Usually this isn't a concern if you are interacting only with the
-     * PocketBase API because it has the proper server-side security checks in place,
+     * CoddySpace API because it has the proper server-side security checks in place,
      * but if you are using the store `isValid` state for permission controls
      * in a node server (eg. SSR), then it is recommended to call `authRefresh()`
      * after loading the cookie to ensure an up-to-date token and model state.
@@ -508,9 +487,9 @@ declare class RealtimeService extends BaseService {
     private disconnect;
 }
 interface RecordAuthResponse<T = RecordModel> {
-    // The signed PocketBase auth record.
+    // The signed CoddySpace auth record.
     record: T;
-    // The PocketBase record auth token.
+    // The CoddySpace record auth token.
     //
     // If you are looking for the OAuth2 access and refresh tokens
     // they are available under the `meta.accessToken` and `meta.refreshToken` props.
@@ -549,7 +528,7 @@ interface OAuth2AuthConfig extends SendOptions {
     };
     // optional callback that is triggered after the OAuth2 sign-in/sign-up url generation
     urlCallback?: OAuth2UrlCallback;
-    // optional query params to send with the PocketBase auth request (eg. fields, expand, etc.)
+    // optional query params to send with the CoddySpace auth request (eg. fields, expand, etc.)
     query?: RecordOptions;
 }
 declare class RecordService extends CrudService<RecordModel> {
@@ -693,7 +672,7 @@ declare class RecordService extends CrudService<RecordModel> {
      * @deprecated This form of authWithOAuth2 is deprecated.
      *
      * Please use `authWithOAuth2Code()` OR its simplified realtime version
-     * as shown in https://pocketbase.io/docs/authentication/#oauth2-integration.
+     * as shown in https://coddyspace.io/docs/authentication/#oauth2-integration.
      */
     authWithOAuth2<T = RecordModel>(provider: string, code: string, codeVerifier: string, redirectUrl: string, createData?: {
         [key: string]: any;
@@ -902,7 +881,7 @@ declare class BackupService extends BaseService {
     getDownloadUrl(token: string, key: string): string;
 }
 interface BeforeSendResult {
-    [key: string]: any; // for backward compatibility
+    [key: string]: any;
     url?: string;
     options?: {
         [key: string]: any;
@@ -1009,7 +988,16 @@ declare class Client {
      * @param  {string} idOrName
      * @return {RecordService}
      */
+    /**
+     * Returns the RecordService associated to the specified collection.
+     *
+     * @param  {string} idOrName
+     * @return {RecordService}
+     */
     collection(idOrName: string): RecordService;
+    /**
+     * Globally enable or disable auto cancellation for pending duplicated requests.
+     */
     /**
      * Globally enable or disable auto cancellation for pending duplicated requests.
      */
@@ -1017,7 +1005,13 @@ declare class Client {
     /**
      * Cancels single request by its cancellation key.
      */
+    /**
+     * Cancels single request by its cancellation key.
+     */
     cancelRequest(requestKey: string): Client;
+    /**
+     * Cancels all pending requests.
+     */
     /**
      * Cancels all pending requests.
      */
@@ -1025,9 +1019,15 @@ declare class Client {
     /**
      * Legacy alias of `pb.files.getUrl()`.
      */
+    /**
+     * Legacy alias of `pb.files.getUrl()`.
+     */
     getFileUrl(record: Pick<{
         [key: string]: any;
-    }, "id" | "collectionId" | "collectionName">, filename: string, queryParams?: FileOptions): string;
+    }, 'id' | 'collectionId' | 'collectionName'>, filename: string, queryParams?: FileOptions): string;
+    /**
+     * Builds a full client url by safely concatenating the provided path.
+     */
     /**
      * Builds a full client url by safely concatenating the provided path.
      */
@@ -1035,7 +1035,17 @@ declare class Client {
     /**
      * Sends an api http request.
      */
+    /**
+     * Sends an api http request.
+     */
     send<T = any>(path: string, options: SendOptions): Promise<T>;
+    /**
+     * Shallow copy the provided object and takes care to initialize
+     * any options required to preserve the backward compatability.
+     *
+     * @param  {SendOptions} options
+     * @return {SendOptions}
+     */
     /**
      * Shallow copy the provided object and takes care to initialize
      * any options required to preserve the backward compatability.
@@ -1048,7 +1058,14 @@ declare class Client {
      * Converts analyzes the provided body and converts it to FormData
      * in case a plain object with File/Blob values is used.
      */
+    /**
+     * Converts analyzes the provided body and converts it to FormData
+     * in case a plain object with File/Blob values is used.
+     */
     private convertToFormDataIfNeeded;
+    /**
+     * Checks if the submitted body object has at least one Blob/File field.
+     */
     /**
      * Checks if the submitted body object has at least one Blob/File field.
      */
@@ -1057,7 +1074,14 @@ declare class Client {
      * Extracts the header with the provided name in case-insensitive manner.
      * Returns `null` if no header matching the name is found.
      */
+    /**
+     * Extracts the header with the provided name in case-insensitive manner.
+     * Returns `null` if no header matching the name is found.
+     */
     private getHeader;
+    /**
+     * Loosely checks if the specified body is a FormData instance.
+     */
     /**
      * Loosely checks if the specified body is a FormData instance.
      */
@@ -1065,150 +1089,9 @@ declare class Client {
     /**
      * Serializes the provided query parameters into a query string.
      */
+    /**
+     * Serializes the provided query parameters into a query string.
+     */
     private serializeQueryParams;
 }
-/**
- * ClientResponseError is a custom Error class that is intended to wrap
- * and normalize any error thrown by `Client.send()`.
- */
-declare class ClientResponseError extends Error {
-    url: string;
-    status: number;
-    response: {
-        [key: string]: any;
-    };
-    isAbort: boolean;
-    originalError: any;
-    constructor(errData?: any);
-    /**
-     * Alias for `this.response` to preserve the backward compatibility.
-     */
-    get data(): {
-        [key: string]: any;
-    };
-    /**
-     * Make a POJO's copy of the current error class instance.
-     * @see https://github.com/vuex-orm/vuex-orm/issues/255
-     */
-    toJSON(): this;
-}
-/**
- * The default token store for browsers with auto fallback
- * to runtime/memory if local storage is undefined (eg. in node env).
- */
-declare class LocalAuthStore extends BaseAuthStore {
-    private storageFallback;
-    private storageKey;
-    constructor(storageKey?: string);
-    /**
-     * @inheritdoc
-     */
-    get token(): string;
-    /**
-     * @inheritdoc
-     */
-    get model(): AuthModel;
-    /**
-     * @inheritdoc
-     */
-    save(token: string, model?: AuthModel): void;
-    /**
-     * @inheritdoc
-     */
-    clear(): void;
-    // ---------------------------------------------------------------
-    // Internal helpers:
-    // ---------------------------------------------------------------
-    /**
-     * Retrieves `key` from the browser's local storage
-     * (or runtime/memory if local storage is undefined).
-     */
-    private _storageGet;
-    /**
-     * Stores a new data in the browser's local storage
-     * (or runtime/memory if local storage is undefined).
-     */
-    private _storageSet;
-    /**
-     * Removes `key` from the browser's local storage and the runtime/memory.
-     */
-    private _storageRemove;
-    /**
-     * Updates the current store state on localStorage change.
-     */
-    private _bindStorageEvent;
-}
-type AsyncSaveFunc = (serializedPayload: string) => Promise<void>;
-type AsyncClearFunc = () => Promise<void>;
-/**
- * AsyncAuthStore is a helper auth store implementation
- * that could be used with any external async persistent layer
- * (key-value db, local file, etc.).
- *
- * Here is an example with the React Native AsyncStorage package:
- *
- * ```
- * import AsyncStorage from "@react-native-async-storage/async-storage";
- * import PocketBase, { AsyncAuthStore } from "pocketbase";
- *
- * const store = new AsyncAuthStore({
- *     save:    async (serialized) => AsyncStorage.setItem("pb_auth", serialized),
- *     initial: await AsyncStorage.getItem("pb_auth"),
- * });
- *
- * const pb = new PocketBase("https://example.com", store)
- * ```
- */
-declare class AsyncAuthStore extends BaseAuthStore {
-    private saveFunc;
-    private clearFunc?;
-    private queue;
-    constructor(config: {
-        // The async function that is called every time
-        // when the auth store state needs to be persisted.
-        save: AsyncSaveFunc;
-        /// An *optional* async function that is called every time
-        /// when the auth store needs to be cleared.
-        ///
-        /// If not explicitly set, `saveFunc` with empty data will be used.
-        clear?: AsyncClearFunc;
-        // initial data to load into the store
-        initial?: string;
-    });
-    /**
-     * @inheritdoc
-     */
-    save(token: string, model?: AuthModel): void;
-    /**
-     * @inheritdoc
-     */
-    clear(): void;
-    /**
-     * Initializes the auth store state.
-     */
-    private _loadInitial;
-    /**
-     * Appends an async function to the queue.
-     */
-    private _enqueue;
-    /**
-     * Starts the queue processing.
-     */
-    private _dequeue;
-}
-/**
- * Returns JWT token's payload data.
- */
-declare function getTokenPayload(token: string): {
-    [key: string]: any;
-};
-/**
- * Checks whether a JWT token is expired or not.
- * Tokens without `exp` payload key are considered valid.
- * Tokens with empty payload (eg. invalid token strings) are considered expired.
- *
- * @param token The token to check.
- * @param [expirationThreshold] Time in seconds that will be subtracted from the token `exp` property.
- */
-declare function isTokenExpired(token: string, expirationThreshold?: number): boolean;
-export { Client as default, BeforeSendResult, ClientResponseError, ListResult, BaseModel, AdminModel, SchemaField, CollectionModel, ExternalAuthModel, LogRequestModel, RecordModel, SendOptions, CommonOptions, ListOptions, FullListOptions, RecordOptions, RecordListOptions, RecordFullListOptions, LogStatsOptions, FileOptions, CrudService, AdminAuthResponse, AdminService, CollectionService, HourlyStats, LogService, UnsubscribeFunc, RealtimeService, RecordAuthResponse, AuthProviderInfo, AuthMethodsList, RecordSubscription, OAuth2UrlCallback, OAuth2AuthConfig, RecordService, AuthModel, OnStoreChangeFunc, BaseAuthStore, LocalAuthStore, AsyncSaveFunc, AsyncClearFunc, AsyncAuthStore, getTokenPayload, isTokenExpired, ParseOptions, cookieParse, SerializeOptions, cookieSerialize };
+export { BeforeSendResult, Client as default };

@@ -15,14 +15,14 @@ type queueFunc = () => Promise<void>;
  *
  * ```
  * import AsyncStorage from "@react-native-async-storage/async-storage";
- * import PocketBase, { AsyncAuthStore } from "pocketbase";
+ * import CoddySpace, { AsyncAuthStore } from "coddyspace";
  *
  * const store = new AsyncAuthStore({
  *     save:    async (serialized) => AsyncStorage.setItem("pb_auth", serialized),
  *     initial: await AsyncStorage.getItem("pb_auth"),
  * });
  *
- * const pb = new PocketBase("https://example.com", store)
+ * const pb = new CoddySpace("https://example.com", store)
  * ```
  */
 export class AsyncAuthStore extends BaseAuthStore {

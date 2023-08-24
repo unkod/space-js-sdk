@@ -82,7 +82,7 @@ type AuthModel = RecordModel | AdminModel | null;
 type OnStoreChangeFunc = (token: string, model: AuthModel) => void;
 /**
  * Base AuthStore class that is intended to be extended by all other
- * PocketBase AuthStore implementations.
+ * CoddySpace AuthStore implementations.
  */
 declare abstract class BaseAuthStore {
     protected baseToken: string;
@@ -122,7 +122,7 @@ declare abstract class BaseAuthStore {
      *
      * NB! This function doesn't validate the token or its data.
      * Usually this isn't a concern if you are interacting only with the
-     * PocketBase API because it has the proper server-side security checks in place,
+     * CoddySpace API because it has the proper server-side security checks in place,
      * but if you are using the store `isValid` state for permission controls
      * in a node server (eg. SSR), then it is recommended to call `authRefresh()`
      * after loading the cookie to ensure an up-to-date token and model state.
@@ -487,9 +487,9 @@ declare class RealtimeService extends BaseService {
     private disconnect;
 }
 interface RecordAuthResponse<T = RecordModel> {
-    // The signed PocketBase auth record.
+    // The signed CoddySpace auth record.
     record: T;
-    // The PocketBase record auth token.
+    // The CoddySpace record auth token.
     //
     // If you are looking for the OAuth2 access and refresh tokens
     // they are available under the `meta.accessToken` and `meta.refreshToken` props.
@@ -528,7 +528,7 @@ interface OAuth2AuthConfig extends SendOptions {
     };
     // optional callback that is triggered after the OAuth2 sign-in/sign-up url generation
     urlCallback?: OAuth2UrlCallback;
-    // optional query params to send with the PocketBase auth request (eg. fields, expand, etc.)
+    // optional query params to send with the CoddySpace auth request (eg. fields, expand, etc.)
     query?: RecordOptions;
 }
 declare class RecordService extends CrudService<RecordModel> {
@@ -672,7 +672,7 @@ declare class RecordService extends CrudService<RecordModel> {
      * @deprecated This form of authWithOAuth2 is deprecated.
      *
      * Please use `authWithOAuth2Code()` OR its simplified realtime version
-     * as shown in https://pocketbase.io/docs/authentication/#oauth2-integration.
+     * as shown in https://coddyspace.io/docs/authentication/#oauth2-integration.
      */
     authWithOAuth2<T = RecordModel>(provider: string, code: string, codeVerifier: string, redirectUrl: string, createData?: {
         [key: string]: any;

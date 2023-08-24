@@ -20,12 +20,12 @@ function basePlugins() {
 }
 
 export default [
-    // ES bundle (the PocketBase client as default export + additional helper classes).
+    // ES bundle (the CoddySpace) client as default export + additional helper classes).
     {
         input: 'src/index.ts',
         output: [
             {
-                file:      'dist/pocketbase.es.mjs',
+                file:      'dist/coddyspace.es.mjs',
                 format:    'es',
                 sourcemap: isProduction,
             },
@@ -37,12 +37,12 @@ export default [
     // ES bundle but with .js extension.
     //
     // This is needed mainly because of React Native not recognizing the mjs
-    // extension by default (see https://github.com/pocketbase/js-sdk/issues/47).
+    // extension by default.
     {
         input: 'src/index.ts',
         output: [
             {
-                file:      'dist/pocketbase.es.js',
+                file:      'dist/coddyspace.es.js',
                 format:    'es',
                 sourcemap: isProduction,
             },
@@ -51,13 +51,13 @@ export default [
         watch: { clearScreen: false },
     },
 
-    // UMD bundle (only the PocketBase client as default export).
+    // UMD bundle (only the CoddySpace client as default export).
     {
         input: 'src/Client.ts',
         output: [
             {
-                name:      'PocketBase',
-                file:      'dist/pocketbase.umd.js',
+                name:      'CoddySpace',
+                file:      'dist/coddyspace.umd.js',
                 format:    'umd',
                 exports:   'default',
                 sourcemap: isProduction,
@@ -67,36 +67,17 @@ export default [
         watch: { clearScreen: false },
     },
 
-    // CommonJS bundle (only the PocketBase client as default export).
+    // CommonJS bundle (only the CoddySpace client as default export).
     {
         input: 'src/Client.ts',
         output: [
             {
-                name:      'PocketBase',
-                file:      'dist/pocketbase.cjs.js',
+                name:      'CoddySpace',
+                file:      'dist/coddyspace.cjs.js',
                 format:    'cjs',
                 exports:   'default',
                 sourcemap: isProduction,
             }
-        ],
-        plugins: basePlugins(),
-        watch: { clearScreen: false },
-    },
-
-    // !!!
-    // @deprecated - kept only for backwards compatibility and will be removed in v1.0.0
-    // !!!
-    //
-    // Browser-friendly iife bundle (only the PocketBase client as default export).
-    {
-        input: 'src/Client.ts',
-        output: [
-            {
-                name:      'PocketBase',
-                file:      'dist/pocketbase.iife.js',
-                format:    'iife',
-                sourcemap: isProduction,
-            },
         ],
         plugins: basePlugins(),
         watch: { clearScreen: false },

@@ -13,7 +13,6 @@ export class ClientResponseError extends Error {
         super("ClientResponseError");
 
         // Set the prototype explicitly.
-        // https://github.com/Microsoft/TypeScript-wiki/blob/main/Breaking-Changes.md#extending-built-ins-like-error-array-and-map-may-no-longer-work
         Object.setPrototypeOf(this, ClientResponseError.prototype);
 
         if (errData !== null && typeof errData === 'object') {
@@ -43,9 +42,9 @@ export class ClientResponseError extends Error {
         this.message = this.response?.message;
         if (!this.message) {
             if (this.isAbort) {
-                this.message = 'The request was autocancelled. You can find more info in https://github.com/pocketbase/js-sdk#auto-cancellation.';
+                this.message = 'The request was autocancelled.';
             } else if (this.originalError?.cause?.message?.includes("ECONNREFUSED ::1")) {
-                this.message = 'Failed to connect to the PocketBase server. Try changing the SDK URL from localhost to 127.0.0.1 (https://github.com/pocketbase/js-sdk/issues/21).';
+                this.message = 'Failed to connect to the CoddySpace server. Try changing the SDK URL from localhost to 127.0.0.1.';
             } else {
                 this.message = 'Something went wrong while processing your request.';
             }
@@ -61,7 +60,6 @@ export class ClientResponseError extends Error {
 
     /**
      * Make a POJO's copy of the current error class instance.
-     * @see https://github.com/vuex-orm/vuex-orm/issues/255
      */
     toJSON() {
         return { ...this };

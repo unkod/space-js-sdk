@@ -10,7 +10,7 @@ const defaultCookieKey = 'pb_auth';
 
 /**
  * Base AuthStore class that is intended to be extended by all other
- * PocketBase AuthStore implementations.
+ * CoddySpace AuthStore implementations.
  */
 export abstract class BaseAuthStore {
     protected baseToken: string = '';
@@ -78,7 +78,7 @@ export abstract class BaseAuthStore {
      *
      * NB! This function doesn't validate the token or its data.
      * Usually this isn't a concern if you are interacting only with the
-     * PocketBase API because it has the proper server-side security checks in place,
+     * CoddySpace API because it has the proper server-side security checks in place,
      * but if you are using the store `isValid` state for permission controls
      * in a node server (eg. SSR), then it is recommended to call `authRefresh()`
      * after loading the cookie to ensure an up-to-date token and model state.

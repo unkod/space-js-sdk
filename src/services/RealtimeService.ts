@@ -403,7 +403,6 @@ export class RealtimeService extends BaseService {
             //
             // this is done to avoid unnecessary throwing errors in case
             // unsubscribe is called before the pending connect promises complete
-            // (see https://github.com/pocketbase/pocketbase/discussions/2897#discussioncomment-6423818)
             for (let p of this.pendingConnects) {
                 p.resolve();
             }
