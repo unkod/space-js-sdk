@@ -20,12 +20,12 @@ function basePlugins() {
 }
 
 export default [
-    // ES bundle (the CoddySpace) client as default export + additional helper classes).
+    // ES bundle (the Space) client as default export + additional helper classes).
     {
         input: 'src/index.ts',
         output: [
             {
-                file:      'dist/coddyspace.es.mjs',
+                file:      'dist/space.es.mjs',
                 format:    'es',
                 sourcemap: isProduction,
             },
@@ -42,7 +42,7 @@ export default [
         input: 'src/index.ts',
         output: [
             {
-                file:      'dist/coddyspace.es.js',
+                file:      'dist/space.es.js',
                 format:    'es',
                 sourcemap: isProduction,
             },
@@ -51,13 +51,13 @@ export default [
         watch: { clearScreen: false },
     },
 
-    // UMD bundle (only the CoddySpace client as default export).
+    // UMD bundle (only the Space client as default export).
     {
         input: 'src/Client.ts',
         output: [
             {
-                name:      'CoddySpace',
-                file:      'dist/coddyspace.umd.js',
+                name:      'Space',
+                file:      'dist/space.umd.js',
                 format:    'umd',
                 exports:   'default',
                 sourcemap: isProduction,
@@ -67,13 +67,13 @@ export default [
         watch: { clearScreen: false },
     },
 
-    // CommonJS bundle (only the CoddySpace client as default export).
+    // CommonJS bundle (only the Space client as default export).
     {
         input: 'src/Client.ts',
         output: [
             {
-                name:      'CoddySpace',
-                file:      'dist/coddyspace.cjs.js',
+                name:      'Space',
+                file:      'dist/space.cjs.js',
                 format:    'cjs',
                 exports:   'default',
                 sourcemap: isProduction,

@@ -44,7 +44,7 @@ export class ClientResponseError extends Error {
             if (this.isAbort) {
                 this.message = 'The request was autocancelled.';
             } else if (this.originalError?.cause?.message?.includes("ECONNREFUSED ::1")) {
-                this.message = 'Failed to connect to the CoddySpace server. Try changing the SDK URL from localhost to 127.0.0.1.';
+                this.message = 'Failed to connect to the Space server. Try changing the SDK URL from localhost to 127.0.0.1.';
             } else {
                 this.message = 'Something went wrong while processing your request.';
             }

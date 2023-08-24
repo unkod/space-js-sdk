@@ -8,7 +8,7 @@ export class LocalAuthStore extends BaseAuthStore {
     private storageFallback: { [key: string]: any } = {};
     private storageKey: string
 
-    constructor(storageKey = "coddyspace_auth") {
+    constructor(storageKey = "space_auth") {
         super();
 
         this.storageKey = storageKey;

@@ -13,10 +13,10 @@ import {
 import { normalizeLegacyOptionsArgs } from '@/services/utils/legacy';
 
 export interface RecordAuthResponse<T = RecordModel> {
-    // The signed CoddySpace auth record.
+    // The signed Space auth record.
     record: T;
 
-    // The CoddySpace record auth token.
+    // The Space record auth token.
     //
     // If you are looking for the OAuth2 access and refresh tokens
     // they are available under the `meta.accessToken` and `meta.refreshToken` props.
@@ -61,7 +61,7 @@ export interface OAuth2AuthConfig extends SendOptions {
     // optional callback that is triggered after the OAuth2 sign-in/sign-up url generation
     urlCallback?: OAuth2UrlCallback;
 
-    // optional query params to send with the CoddySpace auth request (eg. fields, expand, etc.)
+    // optional query params to send with the Space auth request (eg. fields, expand, etc.)
     query?: RecordOptions;
 }
 
@@ -98,7 +98,7 @@ export class RecordService extends CrudService<RecordModel> {
      * Subscribe to the realtime changes of a single record in the collection.
      */
     async subscribeOne<T = RecordModel>(recordId: string, callback: (data: RecordSubscription<T>) => void): Promise<UnsubscribeFunc> {
-        console.warn("CoddySpace: subscribeOne(recordId, callback) is deprecated. Please replace it with subscribe(recordId, callback).");
+        console.warn("Space: subscribeOne(recordId, callback) is deprecated. Please replace it with subscribe(recordId, callback).");
         return this.client.realtime.subscribe(this.collectionIdOrName + "/" + recordId, callback);
     }
 
@@ -127,7 +127,7 @@ export class RecordService extends CrudService<RecordModel> {
         callback?: (data: RecordSubscription<T>) => void
     ): Promise<UnsubscribeFunc> {
         if (typeof topicOrCallback === 'function') {
-            console.warn("CoddySpace: subscribe(callback) is deprecated. Please replace it with subscribe('*', callback).");
+            console.warn("Space: subscribe(callback) is deprecated. Please replace it with subscribe('*', callback).");
             return this.client.realtime.subscribe(this.collectionIdOrName, topicOrCallback);
         }
 
@@ -413,7 +413,6 @@ export class RecordService extends CrudService<RecordModel> {
      * @deprecated This form of authWithOAuth2 is deprecated.
      *
      * Please use `authWithOAuth2Code()` OR its simplified realtime version
-     * as shown in https://coddyspace.io/docs/authentication/#oauth2-integration.
      */
     async authWithOAuth2<T = RecordModel>(
         provider: string,
@@ -461,7 +460,7 @@ export class RecordService extends CrudService<RecordModel> {
     async authWithOAuth2<T = RecordModel>(...args: any): Promise<RecordAuthResponse<T>> {
         // fallback to legacy format
         if (args.length > 1 || typeof args?.[0] === 'string') {
-            console.warn("CoddySpace: This form of authWithOAuth2() is deprecated and may get removed in the future. Please replace with authWithOAuth2Code() OR use the authWithOAuth2() realtime form as shown in https://coddyspace.io/docs/authentication/#oauth2-integration.");
+            console.warn("Space: This form of authWithOAuth2() is deprecated and may get removed in the future. Please replace with authWithOAuth2Code() OR use the authWithOAuth2() realtime form as shown in https://space.io/docs/authentication/#oauth2-integration.");
             return this.authWithOAuth2Code<T>(
                 args?.[0] || '',
                 args?.[1] || '',

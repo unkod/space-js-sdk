@@ -1,7 +1,7 @@
 {
   "version": "0.0.1",
-  "name": "coddyspace",
-  "description": "CoddySpace JavaScript SDK",
+  "name": "@coddy/space",
+  "description": "Space JavaScript SDK",
   "author": "Pavel Rusakov",
   "license": "MIT",
   "repository": {
@@ -9,17 +9,17 @@
     "url": "git://github.com/unkod/space-js-sdk.git"
   },
   "exports": {
-    ".": "./dist/coddyspace.es.mjs",
-    "./cjs": "./dist/coddyspace.cjs.js",
-    "./umd": "./dist/coddyspace.umd.js"
+    ".": "./dist/space.es.mjs",
+    "./cjs": "./dist/space.cjs.js",
+    "./umd": "./dist/space.umd.js"
   },
-  "main": "./dist/coddyspace.es.mjs",
-  "module": "./dist/coddyspace.es.mjs",
-  "react-native": "./dist/coddyspace.es.js",
-  "types": "./dist/coddyspace.es.d.mts",
+  "main": "./dist/space.es.mjs",
+  "module": "./dist/space.es.mjs",
+  "react-native": "./dist/space.es.js",
+  "types": "./dist/space.es.d.mts",
   "keywords": [
-    "coddyspace",
-    "coddyspace-js",
+    "space",
+    "space-js",
     "js-sdk",
     "javascript-sdk",
     "coddy-sdk",
